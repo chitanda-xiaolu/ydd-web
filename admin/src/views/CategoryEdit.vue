@@ -19,9 +19,13 @@ export default {
       model: {}
     }
   },
-  methonds: {
-    save() {
-      // this.http.post
+  methods: {
+      save() {
+      this.$router.push('/categories/list')
+      this.$message({
+        type: 'success',
+        message: '保存成功'
+      })
     }
   }
 }
