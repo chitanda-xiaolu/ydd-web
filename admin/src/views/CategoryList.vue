@@ -34,11 +34,13 @@ export default {
       this.$confirm(`是否删除"${row.name}"分类？`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消"
-      }).then(()=>{
+      }).then(async ()=>{
+        this.$http.delete(`categories/${row._id}`)
         this.$message({
           type: "sucess",
           message: "删除成功"
         })
+        this.fetch()
       })
 
     }

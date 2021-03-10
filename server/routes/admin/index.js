@@ -11,8 +11,11 @@ module.exports = app => {
     })
 
     //删除分类
-    router.delete('/categories/:id', async (res, req)=> {
-        
+    router.delete('/categories/:id', async (req, res)=> {
+        await Category.findByIdAndDelete(req.params.id, req.body)
+        res.send({
+            success: true
+        })
     })
 
     //分类列表
