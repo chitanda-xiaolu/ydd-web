@@ -28,6 +28,7 @@ export default {
   },
   methods: {
     async fetch() {
+      console.log('fetch categories')
       const res = await this.$http.get('rest/categories')
       this.items = res.data
     },

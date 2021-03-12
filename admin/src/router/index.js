@@ -10,6 +10,9 @@ import ItemList from '../views/itemList.vue'
 import ArticleEdit from '../views/ArticleEdit.vue'
 import ArticleList from '../views/ArticleList.vue'
 
+import AdminUserEdit from '../views/AdminUserEdit.vue'
+import AdminUserList from '../views/AdminUserList.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -40,7 +43,15 @@ const routes = [
        * @param props 将路由参数传递给组件
        */
       {path: '/articles/edit/:id', component: ArticleEdit, props: true},
-      {path: '/articles/list', component: ArticleList}
+      {path: '/articles/list', component: ArticleList},
+
+      //管理员路由
+      {path: '/admin_users/create', component: AdminUserEdit},
+      /**
+       * @param props 将路由参数传递给组件
+       */
+      {path: '/admin_users/edit/:id', component: AdminUserEdit, props: true},
+      {path: '/admin_users/list', component: AdminUserList}
     ]
   }
 ]
