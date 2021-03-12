@@ -51,7 +51,7 @@ module.exports = app => {
         next()
     },router)
 
-
+    //图片上传
     const multer = require('multer')
     const upload = multer({dest: __dirname + '/../../uploads'})
     app.post('/admin/api/upload', upload.single('file'),async(req,res) => {
@@ -59,4 +59,12 @@ module.exports = app => {
         file.url = `http://localhost:3000/uploads/${file.filename}`
         res.send(file)
     })
+
+    //登录接口
+    app.post('/admin/api/login', async (req, res) => {
+        const model = req.body
+        res.send(model)
+    })
+
+
 }
