@@ -1,9 +1,15 @@
 module.exports = app => {
     const express = require('express')
+    const jwt = require('jsonwebtoken')
+    const AdminUser = require('../../models/AdminUser')
     const router = express.Router({
         mergeParams: true
     })
 
+
+    /**
+     * 路由挂载
+     */
     //model create
     router.post('/', async (req, res) => {
         const model = await req.Model.create(req.body)
@@ -21,7 +27,12 @@ module.exports = app => {
     })
 
     //model list
-    router.get('/', async (req, res) => {
+    router.get('/', async (req, res, nest) => {
+        const token = String(req.headers.authorization || '').split(' ').pop()
+        const tokenData = jwt.verify(token, app.get('secret'))
+        console.log(tokenData)
+        await nest()
+        }, async (req, res) => {
         const queryOptions = {}
         if (req.Model.modelName === "Category") {
             queryOptions.populate = 'parent'
@@ -34,7 +45,7 @@ module.exports = app => {
     router.get('/:id', async (req, res) => {
         const model = await req.Model.findById(req.params.id)
         res.send(model)
-    })
+    }) 
 
     //model edit
     router.put('/:id', async (req, res) => {
@@ -62,8 +73,27 @@ module.exports = app => {
 
     //登录接口
     app.post('/admin/api/login', async (req, res) => {
-        const model = req.body
-        res.send(model)
+        const { username,password } = req.body
+        //1.根据用户名查询用户
+        const user = await AdminUser.findOne({username})
+        console.log(user)
+        if(!user) {
+            return res.status(422).send({
+                message: '用户名不存在'
+            })
+        }
+        //2.校验密码
+        if (user.password == password) {
+            //3.返回token
+            const token = jwt.sign({id: user._id}, app.get('secret'))
+            res.send({token})
+        } else {
+            return res.status(422).send({
+                message: '密码错误'
+            })
+        }
+        
+        
     })
 
 

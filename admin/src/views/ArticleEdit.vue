@@ -17,6 +17,17 @@
         >
         </vue-editor>
       </el-form-item>
+      <el-form-item label="附件上传:">
+        <el-upload
+          id="file_list" 
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-change="handleChange"
+          :file-list="fileList">
+          <el-button size="small" type="primary" style="margin-left: 10px">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip" style="margin-left: 10px">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>
       </el-form-item>
@@ -33,11 +44,21 @@ export default {
   data() {
     return {
       model: {},
-      categories: []
+      categories: [],
+      fileList: [{
+          name: 'food.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }, {
+          name: 'food2.jpeg',
+          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+        }]
     }
   },
   components: {VueEditor},
   methods: {
+      handleChange(file, fileList) {
+        this.fileList = fileList.slice(-3);
+      },
       async save() {
         if (this.id) {
           await this.$http.put(`rest/articles/${this.id}`, this.model)
@@ -76,5 +97,7 @@ export default {
 </script>
 
 <style>
-
+  #file_list {
+    border: rgba(0, 0, 0, 0.589) 1px solid;
+  }
 </style>

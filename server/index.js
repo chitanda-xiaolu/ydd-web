@@ -2,6 +2,9 @@ const express = require("express")
 
 const app = express()
 
+//设置全局的秘钥字符
+app.set('secret', 'chitanda')
+
 app.use(require('cors')())
 app.use(express.json())
 app.use('/uploads', express.static(__dirname + '/uploads'))
