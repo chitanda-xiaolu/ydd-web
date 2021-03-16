@@ -4,7 +4,7 @@
     <el-table :data="items" border>
       <el-table-column prop="_id" label="ID"></el-table-column>
       <el-table-column prop="title" label="标题"></el-table-column>
-      <el-table-column prop="categories" label="文章标签"></el-table-column>
+      <!-- <el-table-column prop="categories" label="文章标签"></el-table-column> -->
       <el-table-column fixed="right" label="操作" width="180">
         <template slot-scope="scope">
           <el-button
@@ -30,6 +30,7 @@ export default {
   methods: {
     async fetch() {
       const res = await this.$http.get('rest/articles')
+      console.log(res.data)
       this.items = res.data
     },
     async remove(row) {

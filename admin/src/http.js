@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Vue from 'vue'
-// import router from './router'
+import router from './router'
 
 const http = axios.create({
     // baseURL: process.env.VUE_APP_API_URL || '/admin/api',
@@ -10,7 +10,9 @@ const http = axios.create({
 
 //请求拦截器
 http.interceptors.request.use(function(config) {
-    config.headers.Authorization = 'Bearer ' + localStorage.token
+    if (localStorage.token) {
+      config.headers.Authorization = 'Bearer ' + (localStorage.token || '')
+    }
     return config
 }, function (error) {
     return Promise.reject(error)
@@ -25,6 +27,10 @@ http.interceptors.response.use(res => {
         type: 'error',
         message: err.response.data.message
       })
+
+      if (err.response.status == 401) {
+        router.push('/login')
+      }
     }
     return Promise.reject(err)
   })

@@ -18,15 +18,36 @@
         </vue-editor>
       </el-form-item>
       <el-form-item label="附件上传:">
-        <el-upload
+        <!-- <el-upload
           id="file_list" 
           class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://localhost:3000/admin/api/upload/file"
           :on-change="handleChange"
           :file-list="fileList">
           <el-button size="small" type="primary" style="margin-left: 10px">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip" style="margin-left: 10px">只能上传jpg/png文件，且不超过500kb</div>
+          <div slot="tip" class="el-upload__tip" style="margin-left: 10px">附件上传</div>
+        </el-upload> -->
+        <el-upload class="upload-demo" action="" :auto-upload="false" :limit="1" ref="upload" :http-request="upload" multiple>
+          <el-button size="small" type="primary">模拟上传</el-button>
         </el-upload>
+        <el-button class="btn" size="small" type="primary" @click="upload">确定上传</el-button>
+      </el-form-item>
+      <el-form-item label="附件列表:">
+        <el-table :data="items" border>
+      <el-table-column prop="_id" label="ID"></el-table-column>
+      <el-table-column prop="title" label="附件名称"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="180">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="$router.push(`/articles/edit/${scope.row._id}`)"
+          >编辑</el-button>
+          <el-button type="text" size="small" >查看</el-button>
+          <el-button type="text" size="small" >删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>
@@ -45,19 +66,28 @@ export default {
     return {
       model: {},
       categories: [],
-      fileList: [{
-          name: 'food.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        }, {
-          name: 'food2.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-        }]
+      fileList: []
     }
   },
   components: {VueEditor},
   methods: {
+      upload() {
+      const formData = new FormData()
+      const file = this.$refs.upload.uploadFiles[0]
+      const headerConfig = { headers: { 'Content-Type': 'multipart/form-data' }}
+      if (!file) { // 若未选择文件
+        alert('请选择文件')
+        return
+      }
+      formData.append('file', file.raw)
+      this.$http.post('http://localhost:3000/admin/api/upload/file', formData, headerConfig).then(res => {
+        console.log(res)
+      })
+    },
       handleChange(file, fileList) {
+        console.log('文件已经上传')
         this.fileList = fileList.slice(-3);
+        console.log(this.fileList)
       },
       async save() {
         if (this.id) {
@@ -82,14 +112,12 @@ export default {
       async handleImageAdded (file, Editor, cursorLocation, resetUploader) {
         let formData = new FormData();
         formData.append("file", file);
-        console.log('开始上传图片')
         const res = await this.$http.post('upload', formData)
         Editor.insertEmbed(cursorLocation, "image", res.data.url);
         resetUploader()
       }
   },
   created() {
-    console.log("文章页面初始化")
     this.fetchCategories()
     this.id && this.fetch()
   }
