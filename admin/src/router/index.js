@@ -14,6 +14,9 @@ import ArticleList from '../views/ArticleList.vue'
 import AdminUserEdit from '../views/AdminUserEdit.vue'
 import AdminUserList from '../views/AdminUserList.vue'
 
+import AttachmentEdit from '../views/AttachmentEidt.vue'
+import AttachmentList from '../views/AttachmentList.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -53,7 +56,15 @@ const routes = [
        * @param props 将路由参数传递给组件
        */
       {path: '/admin_users/edit/:id', component: AdminUserEdit, props: true},
-      {path: '/admin_users/list', component: AdminUserList}
+      {path: '/admin_users/list', component: AdminUserList},
+
+      //附件管理路由
+      {path: '/attachment/create', component: AttachmentEdit},
+      /**
+       * @param props 将路由参数传递给组件
+       */
+      {path: '/attachment/edit/:id', component: AttachmentEdit, props: true},
+      {path: '/attachment/list', component: AttachmentList}
     ]
   }
 ]

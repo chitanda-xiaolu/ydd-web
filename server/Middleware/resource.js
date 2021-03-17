@@ -4,6 +4,7 @@ module.exports = options => {
         const modelName = require('inflection').classify(req.params.resource)
         console.log(modelName)
         req.Model = require(`../models/${modelName}`)
+        console.log('import success')
         next()
     }
 }

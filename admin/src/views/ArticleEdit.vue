@@ -17,7 +17,7 @@
         >
         </vue-editor>
       </el-form-item>
-      <el-form-item label="附件上传:">
+      <el-form-item>
         <!-- <el-upload
           id="file_list" 
           class="upload-demo"
@@ -27,27 +27,6 @@
           <el-button size="small" type="primary" style="margin-left: 10px">点击上传</el-button>
           <div slot="tip" class="el-upload__tip" style="margin-left: 10px">附件上传</div>
         </el-upload> -->
-        <el-upload class="upload-demo" action="" :auto-upload="false" :limit="1" ref="upload" :http-request="upload" multiple>
-          <el-button size="small" type="primary">模拟上传</el-button>
-        </el-upload>
-        <el-button class="btn" size="small" type="primary" @click="upload">确定上传</el-button>
-      </el-form-item>
-      <el-form-item label="附件列表:">
-        <el-table :data="items" border>
-      <el-table-column prop="_id" label="ID"></el-table-column>
-      <el-table-column prop="title" label="附件名称"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="180">
-        <template slot-scope="scope">
-          <el-button
-            type="text"
-            size="small"
-            @click="$router.push(`/articles/edit/${scope.row._id}`)"
-          >编辑</el-button>
-          <el-button type="text" size="small" >查看</el-button>
-          <el-button type="text" size="small" >删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" native-type="submit">保存</el-button>
